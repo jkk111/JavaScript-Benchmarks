@@ -41,4 +41,4 @@ Thats all thats needed to get started, if your methods need global variables, en
 
 [String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation V Template Strings)
 
-Thu Jun 23 2016 20:32:22 GMT+0100 (GMT Summer Time)
+Auto-Generated on: Thu Jun 23 2016 20:41:11

@@ -56,7 +56,8 @@ Test.prototype.writeResults = function() {
     first = false;
     tableBody += `${method} | ${formatTime(this.times[method])}`
   }
-  var body = header + "\n" + tableHeader + "\n" + tableBody;
+  var body = header + "\n" + tableHeader + "\n" + tableBody + "\n\n";
+  body += "Auto-Generated on: " + new Date().toString().substring(0, 24);
   fs.writeFileSync(process.env.PROCESS_README_PATH || "README.md", body);
 }
 
@@ -140,8 +141,8 @@ function updateReadme(tested) {
   tested.forEach(function(item) {
     readme += `[${item}](${genPath(gitBase, item)})\n\n`;
   });
-  readme += new Date();
-  readme.trim();
+  readme += "Auto-Generated on: " + new Date().toString().substring(0, 24);
+  readme = readme.trim();
   fs.writeFileSync("README.md", readme);
 }
 

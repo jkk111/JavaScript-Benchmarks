@@ -2,6 +2,8 @@
 ## Test Results - 1000000 runs
 Method Name | Run Time 
 ----------- | :------: 
-concat | 55ms 796138ns
-template | 120ms 839458ns
-templateWStatic | 103ms 220270ns
+concat | 39ms 638340ns
+template | 112ms 863788ns
+templateWStatic | 77ms 391715ns
+
+Auto-Generated on: Thu Jun 23 2016 20:41:11
