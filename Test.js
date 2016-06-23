@@ -1,39 +1,51 @@
+var BANNED_FOLDER_NAMES = ["node_modules", ".git"];
 var fs = require("fs");
-function Test(methods, name, loops) {
+var path = require("path");
+var childProcess = require("child_process");
+function Test(methods, name, loops, silent) {
   this.loops = loops || 10000;
   this.methods = methods;
   this.testTitle = name;
   this.times = {};
+  this.silent = silent || process.env.SILENT_JS_TEST;
 }
 
 Test.prototype.run = function() {
+  console.info("Starting test:", this.testTitle);
   for(method in this.methods) {
     var start = process.hrtime();
-    console.info("Starting test of %s", method);
+    if(!this.silent) {
+      console.info("Starting test of %s", method);
+    }
     var lastPercent = -1;
     for(var i = 0; i < this.loops; i++) {
       var percent = Math.floor((i / this.loops) * 100);
       if(percent > lastPercent) {
-        console.info(`${method}) ${percent}%`);
+        if(!this.silent) {
+          console.info(`${method}) ${percent}%`);
+        }
         lastPercent = percent;
       }
       this.methods[method]();
     }
-    console.info(`${method}) 100%`);
+    if(!this.silent) {
+      console.info(`${method}) 100%`);
+    }
     var end = process.hrtime(start);
-    console.info("Completed test of %s", method);
-    console.info("Time: %ds %sns", end[0], end[1]);
+    if(!this.silent) {
+      console.info("Completed test of %s", method);
+      console.info("Time: %ds %sns", end[0], end[1]);
+    }
     this.times[method] = (end[0]*1e9) + end[1];
   }
+  console.info("Test Completed:", this.testTitle);
   this.writeResults();
   return this;
 }
 
-
-
 Test.prototype.writeResults = function() {
   var header = "# " + this.testTitle;
-  var subtitle = "\n## Test Results";
+  var subtitle = `\n## Test Results - ${this.loops} runs`;
   header += subtitle
   var tableHeader = "Method Name | Run Time \n" +
                     "----------- | :------: ";
@@ -45,7 +57,7 @@ Test.prototype.writeResults = function() {
     tableBody += `${method} | ${formatTime(this.times[method])}`
   }
   var body = header + "\n" + tableHeader + "\n" + tableBody;
-  fs.writeFileSync("README.md", body);
+  fs.writeFileSync(process.env.PROCESS_README_PATH || "README.md", body);
 }
 
 // This could definitely be done better
@@ -94,5 +106,27 @@ function formatTime(time) {
   return timestr;
 }
 
+if (require.main === module) {
+  console.info("Re-Running all tests");
+  var folderContents = fs.readdirSync("./");
+  for(var i = 0; i < folderContents.length; i++) {
+    var name = folderContents[i];
+    if(BANNED_FOLDER_NAMES.indexOf(name) == -1) {
+      var stats = fs.statSync(name);
+      if(stats.isDirectory()) {
+        try {
+          var resolved = path.resolve(__dirname, name, "./index.js");
+          fs.accessSync(resolved, fs.R_OK);
+          var env = process.env;
+          env.SILENT_JS_TEST = true;
+          env.PROCESS_README_PATH = path.resolve(__dirname, name, "./README.md");
+          childProcess.fork(resolved, {env: env});
+        } catch(e) {
+          // Folder doesn't have an index.js script
+        }
+      }
+    }
+  }
+}
 
 module.exports = Test;

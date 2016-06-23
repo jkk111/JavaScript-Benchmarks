@@ -30,4 +30,6 @@ To create a new test pass an object of methods, a name, and an optional number o
   var test = new Test(methods, title, loops);
   test.run();
 ```
+
+Test can also take an optional fourth variable, silent, if true it will only print on start and finish.
 Thats all thats needed to get started, if your methods need global variables, ensure you add the above to the end of your file.
