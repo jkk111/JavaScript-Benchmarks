@@ -41,4 +41,4 @@ Thats all thats needed to get started, if your methods need global variables, en
 
 [String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation V Template Strings)
 
-<p align='center'>Auto-Generated on: Thu Jun 23 2016 20:48:14</p>
+<p align='center'><b>Auto-Generated on: Thu Jun 23 2016 20:52:28</b></p>
