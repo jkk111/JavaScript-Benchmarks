@@ -146,10 +146,10 @@ function updateReadme(tested) {
 }
 
 function getGitBase() {
-  var regex = /(https:\/\/.*\.git)/;
+  var regex = /(https:\/\/.*)\.git/;
   var config = fs.readFileSync(".git/config").toString();
   var matched = regex.exec(config);
-  if(matched) return matched[0];
+  if(matched) return matched[1];
   else return "";
 }
 
