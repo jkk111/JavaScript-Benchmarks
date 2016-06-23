@@ -2,5 +2,5 @@
 ## Test Results - 1000000 runs
 Method Name | Run Time 
 ----------- | :------: 
-concat | 44ms 43432ns
-arrayJoin | 90ms 792925ns
+concat | 57ms 90941ns
+arrayJoin | 100ms 31028ns

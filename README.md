@@ -37,8 +37,8 @@ Thats all thats needed to get started, if your methods need global variables, en
 
 ## Tests
 
-[String Concatenation v array.join](https://github.com/jkk111/JavaScript-Benchmarks.git/tree/master/String Concatenation v array.join)
+[String Concatenation v Array.join](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation v Array.join)
 
-[String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks.git/tree/master/String Concatenation V Template Strings)
+[String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation V Template Strings)
 
-Thu Jun 23 2016 20:29:09 GMT+0100 (GMT Summer Time)
+Thu Jun 23 2016 20:32:22 GMT+0100 (GMT Summer Time)
