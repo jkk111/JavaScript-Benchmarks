@@ -107,6 +107,7 @@ function formatTime(time) {
 }
 
 if (require.main === module) {
+  var tested = [];
   console.info("Re-Running all tests");
   var folderContents = fs.readdirSync("./");
   for(var i = 0; i < folderContents.length; i++) {
@@ -121,12 +122,41 @@ if (require.main === module) {
           env.SILENT_JS_TEST = true;
           env.PROCESS_README_PATH = path.resolve(__dirname, name, "./README.md");
           childProcess.fork(resolved, {env: env});
+          tested.push(name);
         } catch(e) {
-          // Folder doesn't have an index.js script
+          // Folder doesn't have an index.js script or other error occured
         }
       }
     }
   }
+  updateReadme(tested);
+}
+
+function updateReadme(tested) {
+  var readmeBase = fs.readFileSync("README.base.md").toString();
+  var gitBase = getGitBase();
+  var readme = readmeBase.trim() + "\n\n";
+  readme += "## Tests\n\n"
+  tested.forEach(function(item) {
+    readme += `[${item}](${genPath(gitBase, item)})\n\n`;
+  });
+  readme += new Date();
+  readme.trim();
+  fs.writeFileSync("README.md", readme);
+}
+
+function getGitBase() {
+  var regex = /(https:\/\/.*\.git)/;
+  var config = fs.readFileSync(".git/config").toString();
+  var matched = regex.exec(config);
+  if(matched) return matched[0];
+  else return "";
+}
+
+function genPath(gitBase, dirName) {
+  if(gitBase.charAt(gitBase.length - 1) != "/")
+    gitBase += "/";
+  return gitBase + "tree/master/" + dirName;
 }
 
 module.exports = Test;
