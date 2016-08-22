@@ -84,6 +84,7 @@ function formatTime(time) {
   var symbols = {
     days: "d",
     hours: "h",
+    minutes: "m",
     seconds: "s",
     millis: "ms",
     nanos: "ns"
