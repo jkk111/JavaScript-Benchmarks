@@ -13,6 +13,7 @@ function Test(methods, name, loops, silent) {
 Test.prototype.run = function() {
   console.info("Starting test:", this.testTitle);
   for(method in this.methods) {
+    this.activeMethod = method;
     var start = process.hrtime();
     if(!this.silent) {
       console.info("Starting test of %s", method);
@@ -39,6 +40,10 @@ Test.prototype.run = function() {
     this.times[method] = (end[0]*1e9) + end[1];
   }
   console.info("Test Completed:", this.testTitle);
+  if(this.pendingSilent) {
+    clearInterval(this.pendingSilent);
+    console.info("clearing");
+  }
   this.writeResults();
   return this;
 }
@@ -108,8 +113,34 @@ function formatTime(time) {
   return timestr;
 }
 
+function copy(obj) {
+  if(Array.isArray(obj)) return copyArr(obj);
+  var clone = {};
+  for(var key in obj) {
+    if(typeof obj[key] == "object") {
+      clone[key] = copy(obj[key]);
+    } else {
+      clone[key] = obj[key];
+    }
+  }
+  return clone;
+}
+
+function copyArr(arr) {
+  var clone = [];
+  for(var el of arr) {
+    if(typeof el == "object") {
+      clone.push(copy(el));
+    } else {
+      clone.push(el);
+    }
+  }
+  return clone;
+}
+
 if (require.main === module) {
   var tested = [];
+  var tests = [];
   console.info("Re-Running all tests");
   var folderContents = fs.readdirSync("./");
   for(var i = 0; i < folderContents.length; i++) {
@@ -120,18 +151,41 @@ if (require.main === module) {
         try {
           var resolved = path.resolve(__dirname, name, "./index.js");
           fs.accessSync(resolved, fs.R_OK);
-          var env = process.env;
+          var env = copy(process.env);
           env.SILENT_JS_TEST = true;
           env.PROCESS_README_PATH = path.resolve(__dirname, name, "./README.md");
-          childProcess.fork(resolved, {env: env});
-          tested.push(name);
+          tests.push({ path: resolved, env: env, name: name })
         } catch(e) {
           // Folder doesn't have an index.js script or other error occured
         }
       }
     }
   }
-  updateReadme(tested);
+  function testComplete(name) {
+    if(name) {
+      tested.push(name);
+    }
+    if(tests.length > 0) {
+      var test = tests.pop();
+      runTest(test, testComplete);
+    } else {
+      updateReadme(tested);
+    }
+  }
+  testComplete();
+}
+
+function runTest(obj, cb) {
+  var test = childProcess.spawn("node", [obj.path], {env: obj.env});
+  test.stdout.on("data", function(d) {
+    console.log(d.toString().trim());
+  });
+  test.stderr.on("data", function(d) {
+    console.log(d.toString().trim());
+  });
+  test.on("close", function() {
+    if(cb) cb(obj.name);
+  });
 }
 
 function updateReadme(tested) {

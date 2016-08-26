@@ -2,7 +2,7 @@
 ## Test Results - 1000000 runs
 Method Name | Run Time 
 ----------- | :------: 
-concat | 58ms 297203ns
-arrayJoin | 138ms 783654ns
+concat | 63ms 634702ns
+arrayJoin | 93ms 967769ns
 
-<p align='center'><b>Auto-Generated on: Thu Aug 25 2016 02:50:02</b></p>
+<p align='center'><b>Auto-Generated on: Fri Aug 26 2016 03:42:42</b></p>

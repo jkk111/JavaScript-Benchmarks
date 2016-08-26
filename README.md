@@ -37,12 +37,12 @@ Thats all thats needed to get started, if your methods need global variables, en
 
 ## Tests
 
-[Array Length v Cached Length](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/Array Length v Cached Length)
-
-[Repeated Array.isArray v Cached Result](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/Repeated Array.isArray v Cached Result)
+[String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation V Template Strings)
 
 [String Concatenation v Array.join](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation v Array.join)
 
-[String Concatenation V Template Strings](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/String Concatenation V Template Strings)
+[Repeated Array.isArray v Cached Result](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/Repeated Array.isArray v Cached Result)
 
-<p align='center'><b>Auto-Generated on: Thu Aug 25 2016 02:50:01</b></p>
+[Array Length v Cached Length](https://github.com/jkk111/JavaScript-Benchmarks/tree/master/Array Length v Cached Length)
+
+<p align='center'><b>Auto-Generated on: Fri Aug 26 2016 03:43:31</b></p>
